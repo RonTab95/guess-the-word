@@ -1,4 +1,4 @@
-const unOrderedList = document.querySelector(".guessed-letters");
+const guesses = document.querySelector(".guessed-letters");
 const Guessbutton = document.querySelector(".guess");
 const textInput = document.querySelector(".letter");
 const inprogress = document.querySelector(".word-in-progress");
@@ -19,7 +19,8 @@ Guessbutton.addEventListener("click", function (e) {
     //Variable for the text input
     let input = textInput.value.toUpperCase();
 
-    checkInput(input); //Check the inputs
+    //Check the inputs
+    checkInput(input); 
 
    });
 
@@ -29,6 +30,24 @@ const clearInput = function () {
 
 };
 
+//Function to display guessed letters
+
+const displayGuesses = function(guessedLetters){
+    // clear the innerHTML of the UL
+    guessedLetters.innerHTML = "";
+
+    //create a list item
+    const guessItem =document.createElement("li");
+    
+    //set the innertext to the guessedLetters
+    guessItem.innerText= guessedLetters ;
+   
+    //Append the guesses letter to the UL
+    guesses.append(guessItem);
+
+
+}
+
 // Function to Capture Input
 
 const makeGuess = function (letter) {
@@ -37,6 +56,8 @@ const makeGuess = function (letter) {
 
        //Verify the array is updating its elements
         guessedLetters.push(letter);
+        displayGuesses(letter);
+
 
     } else {
        
@@ -46,11 +67,12 @@ const makeGuess = function (letter) {
 };
 
 
+
 //   Accept and Validate Player Guesses  //
 
 
-//Function to Check Player’s Input
-const checkInput = function (input) {
+  //Function to Check Player’s Input
+   const checkInput = function (input) {
 
     //Show the game in progress... message
     messages.innerText = "In progress...";
@@ -85,6 +107,7 @@ const checkInput = function (input) {
                 if (input.match(acceptedLetter)) {
                     // Call the makeGuess function
                     makeGuess(input);
+                    
 
                     //Clear the input field after each guesses
                     clearInput();
@@ -104,13 +127,6 @@ const checkInput = function (input) {
 
 
     console.log(guessedLetters);
-
-
-
-
-
-
-
 
 
 };
