@@ -6,6 +6,8 @@ const remainingGuesses = document.querySelector(".remaining");
 const spanGuess = document.querySelector("span");
 const messages = document.querySelector(".message");
 const playAgainButton = document.querySelector("play-again-hide");
+let numberOfGuessesLeft = 8;
+
 
 let word = "magnolia";
 
@@ -44,39 +46,71 @@ const displayGuesses = function (guessedLetters) {
     // clear the innerHTML of the UL
     guessedLetters.innerHTML = "";
     //create a list item
-        const guessItem = document.createElement("li");
-        //set the innertext to the guessedLetters
-        guessItem.innerText = guessedLetters;
-        //Append the guesses letter to the UL
-        guesses.append(guessItem);
-    };
-//*******Check if the player guessed correctly *****//
-const checkIfWinner  = function(completedWord){
+    const guessItem = document.createElement("li");
+    //set the innertext to the guessedLetters
+    guessItem.innerText = guessedLetters;
+    //Append the guesses letter to the UL
+    guesses.append(guessItem);
+};
+//**********How many guesses left?********/
+const howManyGuessesLeft = function (letter) {
 
-  if (completedWord === word.toUpperCase()){
-      messages.classList.add(".win");
-      messages.innerHTML= `<p class="highlight">You guessed correct the word! Congrats!</p>`;
-  }
+    const upperWord = word.toUpperCase();
+    const arrayWord = upperWord.split("");
+    
+    console.log(arrayWord);
+
+     if(arrayWord.includes(letter)){
+
+        messages.innerText=`Good guess. The word contains ${letter}`;
+     }else {
+        
+        messages.innerText=`Try again. The word does not contain ${letter}`;
+        numberOfGuessesLeft-=1;
+        remainingGuesses.innerHTML=`<p> You have ${numberOfGuessesLeft} guesses left</p>`;
+        
+        if(numberOfGuessesLeft<=0){
+
+            remainingGuesses.innerHTML=`<p> You have ${numberOfGuessesLeft} guesses left</p>`;
+            messages.innerText=`GAME OVER. YOU LOSE!!!`;
+        }
+
+
+     }
+
+};
+//*******Check if the player guessed correctly *****//
+const checkIfWinner = function (completedWord) {
+
+    if (completedWord === word.toUpperCase()) {
+        messages.classList.add(".win");
+        messages.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+    }
 };
 
 //*******Function to update the word in progress******//
 const updateWordInprogress = function (guessedLetters) {
-    //Convert the word to uppercase and split() them into an array//
+//Convert the word to uppercase and split() them into an array//
     let wordUpper = word.toUpperCase();
     const wordArray = wordUpper.split("");
     //Compare the guessedLetters with the contents of the wordArray
     const unmaskArray = [];
+    
     for (let elements of wordArray) {
         if (guessedLetters.includes(elements)) {
             unmaskArray.push(elements);
+            console.log(numberOfGuessesLeft);
+                        
         } else {
-            unmaskArray.push("●");
-        }
+             unmaskArray.push("●");              
+     }
         wordInProgress.innerText = unmaskArray.join("");
+        
     }
     console.log(wordInProgress.innerText);
     checkIfWinner(wordInProgress.innerText);
-    console.log(word);
+    // console.log(word);
+    // console.log(numberOfGuessesLeft );
 
 };
 
@@ -89,6 +123,7 @@ const makeGuess = function (letter) {
         guessedLetters.push(letter);
         displayGuesses(letter);
         updateWordInprogress(guessedLetters);
+        howManyGuessesLeft(letter);
     }
 };
 //***Accept and Validate Player Guesses***//
@@ -96,28 +131,30 @@ const makeGuess = function (letter) {
 //Function to Check Player’s Input
 const checkInput = function (input) {
     //Show the game in progress... message
-    messages.innerText = " Guess again.";
+    messages.innerText = " Try to guess the hidden word!";
     //variable for the accepted letter sequence   
     const acceptedLetter = /[a-zA-Z]/; //<<REGEX
     //***conditional block to check for different scenarios***//
     //check if the input is empty?
     if (input === "") {
-        messages.innerText="Please input a letter.";
+        messages.innerText = "Please input a letter.";
     } else
         //only one letter allowed 
         if (input.length >= 2) {
-            messages.innerText="Only a single letter is allowed.";
+            messages.innerText = "Only a single letter is allowed.";
             //Clear the input field after each guesses
             clearInput();
         } else
             //Check for letters only
             if (!input.match(acceptedLetter)) {
-                messages.innerText="Invalid entry. Only letters are allowed.";
+                messages.innerText = "Invalid entry. Only letters are allowed.";
                 //Clear the input field after each guesses
                 clearInput();
             } else
                 //Good input
                 if (input.match(acceptedLetter)) {
+                    //Clear the message
+                     messages.innerHTML = "";
                     // Call the makeGuess function
                     makeGuess(input);
                     //Clear the input field after each guesses
@@ -125,6 +162,6 @@ const checkInput = function (input) {
 
                 }
 
-    console.log(guessedLetters);
-    
+    // console.log(guessedLetters);
+
 };
