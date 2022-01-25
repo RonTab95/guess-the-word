@@ -5,12 +5,9 @@ const wordInProgress = document.querySelector(".word-in-progress");
 const remainingGuesses = document.querySelector(".remaining");
 const spanGuess = document.querySelector("span");
 const messages = document.querySelector(".message");
-const playAgainButton = document.querySelector("play-again-hide");
-
+const playAgainButton = document.querySelector(".play-again");
 let numberOfGuessesLeft = 8;
 let word = "";
-
-
 //Array to contain the guessed letters
 const guessedLetters = [];
 
@@ -26,13 +23,8 @@ const getWord = async function () {
     word = wordArray[randomIndex].trim();
     console.log(word);
     maskedWord(word);
-
-
 };
-
 getWord();
-
-
 Guessbutton.addEventListener("click", function (e) {
     e.preventDefault();
     //Variable for the text input
@@ -56,9 +48,6 @@ const maskedWord = function (guessWord) {
     }
     wordInProgress.innerText = maskedWord.join("");
 };
-
-
-
 //********Function to display guessed letters**********//
 
 const displayGuesses = function (guessedLetters) {
@@ -73,16 +62,12 @@ const displayGuesses = function (guessedLetters) {
 };
 //**********How many guesses left?********/
 const howManyGuessesLeft = function (letter) {
-    
     const upperWord = word.toUpperCase();
     const arrayWord = upperWord.split("");
-
     console.log(arrayWord);
-           
     if (arrayWord.includes(letter)) {
-
         messages.innerText = `Good guess. The word contains ${letter}`;
-    } else if (!arrayWord.includes(letter)){
+    } else if (!arrayWord.includes(letter)) {
 
         messages.innerText = `Try again. The word does not contain ${letter}`;
         numberOfGuessesLeft -= 1;
@@ -91,22 +76,20 @@ const howManyGuessesLeft = function (letter) {
         if (numberOfGuessesLeft <= 0) {
 
             remainingGuesses.innerHTML = `<p> You have ${numberOfGuessesLeft} guesses left</p>`;
-            messages.innerText = `GAME OVER. YOU LOSE!!!`;
+            messages.innerHTML = `You are out of guesses.The word is <span class="highlight"> ${word} </span>.`;
+            startOver();
         }
-        
-
     }
-
 };
 //*******Check if the player guessed correctly *****//
 const checkIfWinner = function (completedWord) {
 
     if (completedWord === word.toUpperCase()) {
         messages.classList.add(".win");
-        messages.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+        messages.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;
+        startOver();
     }
 };
-
 //*******Function to update the word in progress******//
 const updateWordInprogress = function (guessedLetters) {
     //Convert the word to uppercase and split() them into an array//
@@ -124,11 +107,8 @@ const updateWordInprogress = function (guessedLetters) {
             unmaskArray.push("●");
         }
         wordInProgress.innerText = unmaskArray.join("");
-
-    }   
-    
-    };
-
+   }
+};
 //********Function to Capture Input***********//
 
 const makeGuess = function (letter) {
@@ -175,9 +155,30 @@ const checkInput = function (input) {
                     makeGuess(input);
                     //Clear the input field after each guesses
                     clearInput();
-
                 }
-
     // console.log(guessedLetters);
+};
+const startOver = function () {
+    playAgainButton.classList.remove("hide");
+    Guessbutton.classList.add("hide");
+    remainingGuesses.classList.add("hide");
+    guesses.classList.add("hide");
+    guesses.innerText = "";
+    textInput.disabled = true;//Disable the text input
 
 };
+playAgainButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    textInput.disabled = false;//Enable the text input
+    playAgainButton.classList.add("hide");
+    Guessbutton.classList.remove("hide");
+    guesses.classList.remove("hide");
+    numberOfGuessesLeft = 8;
+    remainingGuesses.innerHTML = `<p> You have ${numberOfGuessesLeft} guesses left</p>`;
+    messages.innerText = "";
+    getWord();//Restart the word guessing game
+    playAgainButton.classList.add("hide");
+    Guessbutton.classList.remove("hide");
+    remainingGuesses.classList.remove("hide");
+
+});
