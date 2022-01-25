@@ -165,7 +165,7 @@ const startOver = function () {
     guesses.classList.add("hide");
     guesses.innerText = "";
     textInput.disabled = true;//Disable the text input
-
+    guessedLetters.length = 0;
 };
 playAgainButton.addEventListener("click", function (e) {
     e.preventDefault();
@@ -180,5 +180,6 @@ playAgainButton.addEventListener("click", function (e) {
     playAgainButton.classList.add("hide");
     Guessbutton.classList.remove("hide");
     remainingGuesses.classList.remove("hide");
+    guessedLetters.length = 0;
 
 });
