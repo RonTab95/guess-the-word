@@ -2,7 +2,7 @@
 <h1>Guess the word game </h1>
 
 
-<h2>Technologies</h2>
+<h2>languages and Interfaces</h2>
 <ul>
   <li> HTML</li>
   <li> CSS </li>
