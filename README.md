@@ -11,5 +11,5 @@
   <li> DOM </li>
 </ul><br>
 
-<h4> Part of the Skillcrush Break into Tech Blueprint Bootcamp.</h4>
+<p> Part of the Skillcrush Break into Tech Blueprint Bootcamp.</p>
 
