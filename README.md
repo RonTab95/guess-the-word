@@ -1,4 +1,4 @@
-# guess-the-word
+
 <h1>Guess the word game </h1>
 
 
@@ -7,6 +7,8 @@
   <li> HTML</li>
   <li> CSS </li>
   <li> JavaScript </li>
+  <li> API </li>
+  <li> DOM </li>
 </ul><br>
 
 <h4> Skillcrush Break into Tech Blueprint </h4>
